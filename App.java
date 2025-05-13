@@ -28,28 +28,33 @@ public class App {
                     Aluno a = new Aluno();
                     System.out.print("Nome: ");
                     a.setNome(ler.nextLine());
-                    if(i == 0)
-                        ler.nextLine();
+                    if(i == 0) ler.nextLine();
                     System.out.print("Matrícula: ");
-                    a.setMatricula(ler.nextLine());
+                    a.setMatricula(Integer.parseInt(ler.nextLine()));
                     alunos.add(a);
                     i++;
 
                 break;
                 case 2:
                     Float n1, n2, n3;
-                    for (int i = 0; i < alunos.size(); i++) {
-                        System.out.println("Nota 1, 2 e 3 de " + alunos.get(i).getNome() + ": ");
-                        if(i == 0)
-                        ler.nextLine();
+                    for (Aluno aluno : alunos) {
+                        System.out.println("Nota 1, 2 e 3 de " + aluno.getNome() + ": ");
                         n1 = (ler.nextFloat());
                         n2 = (ler.nextFloat());
                         n3 = (ler.nextFloat());
-                        alunos.get(i).setNotas(n1, n2, n3);
+                        aluno.setNotas(n1, n2, n3);
 
                     }
                 break;
+                case 3:
+                    for (Aluno aluno : alunos){
+                        aluno.calcularMedias();
+                    }
+                break;
+                case 4:
+
+                break;
             }
-        }while(java == 0);
+        }while(op != 7);
     }
 }

@@ -12,7 +12,7 @@ public class App {
             System.out.println("--------------------------------------");
             System.out.println("Menu Principal");
             System.out.println("--------------------------------------");
-            System.out.println("1 - Cadastrar produto");
+            System.out.println("1 - Cadastrar Aluno");
             System.out.println("2 - Cadastrar notas");
             System.out.println("3 - Calcular Medias");
             System.out.println("4 - Informar Situacoes");
@@ -54,6 +54,28 @@ public class App {
                 case 4:
 
                 break;
+                case 5:
+                    int mat; 
+                    System.out.println("informe a matricula do aluno: ");
+                    mat = ler.nextInt();
+                    for (Aluno aluno : alunos){
+                        if(mat == aluno.getMatricula()){
+                            System.out.println(aluno.toString());
+                        }else{
+                            System.out.println("Aluno não encontrado");
+                        }
+                    }
+
+                break;
+                case 6:
+
+                break;
+                case 7:
+
+                break;
+                default:
+                System.out.println("Opcao nao encontrada...");
+
             }
         }while(op != 7);
     }

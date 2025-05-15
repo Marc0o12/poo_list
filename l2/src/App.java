@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) throws Exception{
         ArrayList<Aluno> alunos = new ArrayList<Aluno>();
-        int java = 0;
 
         Scanner ler = new Scanner(System.in);
         int op;
@@ -21,6 +20,7 @@ public class App {
             System.out.println("7 - Sair");
 
             op = ler.nextInt();    
+            ler.nextLine();
         
             switch(op){
                 case 1:
@@ -28,7 +28,6 @@ public class App {
                     Aluno a = new Aluno();
                     System.out.print("Nome: ");
                     a.setNome(ler.nextLine());
-                    if(i == 0) ler.nextLine();
                     System.out.print("Matrícula: ");
                     a.setMatricula(Integer.parseInt(ler.nextLine()));
                     alunos.add(a);
@@ -36,7 +35,7 @@ public class App {
 
                 break;
                 case 2:
-                    Float n1, n2, n3;
+                    float n1, n2, n3;
                     for (Aluno aluno : alunos) {
                         System.out.println("Nota 1, 2 e 3 de " + aluno.getNome() + ": ");
                         n1 = (ler.nextFloat());
@@ -49,10 +48,26 @@ public class App {
                 case 3:
                     for (Aluno aluno : alunos){
                         aluno.calcularMedias();
+                        if(aluno.getMedia() < 3){
+                            aluno.setSituacao("Reprovado");
+                        }else if(aluno.getMedia() >= 7){
+                            aluno.setSituacao("Aprovado");
+                        }else{
+                            aluno.setSituacao("Em recuperação");
+                        }
                     }
                 break;
                 case 4:
-
+                    int matr; 
+                    System.out.println("informe a matricula do aluno: ");
+                    matr = ler.nextInt();
+                    for (Aluno aluno : alunos){
+                        if(matr == aluno.getMatricula()){
+                            System.out.println(aluno.getSituacao());
+                        }else{
+                            System.out.println("Aluno não encontrado");
+                        }
+                    }
                 break;
                 case 5:
                     int mat; 
@@ -68,10 +83,35 @@ public class App {
 
                 break;
                 case 6:
+                    int ma, ind; 
+                    System.out.println("informe a matricula do aluno: ");
+                    ma = ler.nextInt();
+                    for (Aluno aluno : alunos){
+                        if(ma == aluno.getMatricula()){
+                            System.out.println("qual nota deseja alterar?(1, 2 ou 3) ");
+                            ind = ler.nextInt();
+                            switch (ind) {
+                                case 1:
+                                    System.out.println("informe a nova nota: ");
+                                    aluno.setNota1(ler.nextFloat());    
+                                break;
+                                case 2:
 
+                                break;
+                                case 3:
+
+                                break;
+                                default:
+                                    System.out.println("Opcao nao encontrada...");
+                                break;
+                            }
+                        }else{
+                            System.out.println("Aluno não encontrado");
+                        }
+                    }
                 break;
                 case 7:
-
+                    System.out.println("Saindo...");
                 break;
                 default:
                 System.out.println("Opcao nao encontrada...");

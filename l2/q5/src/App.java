@@ -1,28 +1,38 @@
+package nova;
+
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class App {
-    public static void main(String[] args) throws Exception {
-        ArrayList<Calcular> numero = new ArrayList<Calcular>();
+    public static void main(String[] args) {
+        ArrayList<Integer> numero = new ArrayList<Integer>();
         Scanner ler = new Scanner(System.in);
-        
-        for(int i = 0; i<6; i++){
-            Calcular n = new Calcular();
-            System.out.println("Diga o numeros: ");
-            n.setNum(ler.nextInt());
+        int n, maior = 0, menor;
+        float media = 0, soma = 0;
+
+        for(int i = 0; i < 6; i++){
+            System.out.println("Digite o numero: ");
+            n = ler.nextInt();
             numero.add(n);
         }
-
-        for (Calcular num2:numero) {
-            num2.calSoma();
+        for(int i = 0; i < 6 ; i++){
+            soma += numero.get(i);
         }
-        for (Calcular nume:numero) {
-            nume.calMedia();
+        System.out.println(soma);
+        media = soma/6;
+        System.out.println(media);
+        for(int i = 0; i < 6 ; i++){
+            if(numero.get(i) > maior){
+                maior = numero.get(i);
+            }
         }
-        for (Calcular num:numero) {
-            num.calMaior();
+        menor = maior;
+        System.out.println(maior);
+        for(int i = 0; i < 6 ; i++){
+            if(numero.get(i) < menor){
+                menor = numero.get(i);
+            }
         }
-        for (Calcular num:numero) {
-            num.calMenor();
-        }
-    }    
+        System.out.println(menor);
+    }
 }

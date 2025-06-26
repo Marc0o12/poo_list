@@ -2,59 +2,47 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-        Scanner ler = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-        // Criando dados
-        Dado dado1 = new Dado();
-        Dado dado2 = new Dado();
+        System.out.print("Quantos jogadores vão participar? ");
+        int qtd = scanner.nextInt();
+        scanner.nextLine(); // limpa buffer
 
-        System.out.print("Quantos jogadores vão apostar? ");
-        int qtd = ler.nextInt();
-        ler.nextLine(); // Limpa buffer
+        if (qtd < 1 || qtd > 11) {
+            System.out.println("Número de jogadores inválido. Encerrando o jogo.");
+            return;
+        }
 
         Jogador[] jogadores = new Jogador[qtd];
+        int[] apostas = new int[qtd];
 
-        // Coleta os dados dos jogadores
+        // Coletar nome e aposta de cada jogador
         for (int i = 0; i < qtd; i++) {
             jogadores[i] = new Jogador();
 
             System.out.print("Nome do jogador " + (i + 1) + ": ");
-            jogadores[i].setNome(ler.nextLine());
+            jogadores[i].setNome(scanner.nextLine());
 
             int aposta;
             do {
-                System.out.print("Aposta (soma entre 2 e 12): ");
-                aposta = ler.nextInt();
-                ler.nextLine();
+                System.out.print("Aposta (entre 2 e 12): ");
+                aposta = scanner.nextInt();
+                scanner.nextLine(); // limpa buffer
             } while (aposta < 2 || aposta > 12);
 
-            jogadores[i].setValorAposta(aposta);
+            apostas[i] = aposta;
         }
 
-        // Rola os dados
-        dado1.rolar();
-        dado2.rolar();
-        int resultado = dado1.getValorFace() + dado2.getValorFace();
+        // Criar e configurar o jogo
+        Jogo jogo = new Jogo();
+        jogo.inserirJogadores(jogadores);
+        jogo.inserirApostas(apostas);
 
-        System.out.println("\n--- Resultado dos Dados ---");
-        System.out.println("Dado 1: " + dado1.getValorFace());
-        System.out.println("Dado 2: " + dado2.getValorFace());
-        System.out.println("Soma: " + resultado);
+        // Jogar os dados
+        jogo.jogarDados();
+        jogo.mostrarResultado();
+        jogo.mostrarVencedor();
 
-        // Verifica os vencedores
-        boolean houveVencedor = false;
-        System.out.println("\n--- Resultado das Apostas ---");
-        for (Jogador jogador : jogadores) {
-            if (jogador.getValorAposta() == resultado) {
-                System.out.println("Vencedor: " + jogador.getNome());
-                houveVencedor = true;
-            }
-        }
-
-        if (!houveVencedor) {
-            System.out.println("Ninguém acertou a aposta.");
-        }
-
-        ler.close();
+        scanner.close();
     }
 }

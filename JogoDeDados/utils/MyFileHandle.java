@@ -1,13 +1,12 @@
-package utils;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MyFileHandle {
-
+    public static ArrayList<String> lines = new ArrayList<>();
     public MyFileHandle() {
 
     }
@@ -17,8 +16,8 @@ public class MyFileHandle {
           FileWriter fw = new FileWriter(path, replace);
           BufferedWriter bw = new BufferedWriter(fw);
           bw.write(texto);
-          fw.close();
           bw.close();
+          fw.close();
           return true;
       } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -33,8 +32,8 @@ public class MyFileHandle {
           fw = new FileWriter(path, replace);
           bw = new BufferedWriter(fw);
           bw.write(num.toString());
+          bw.close();          
           fw.close();
-          bw.close();
           return true;
       } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -52,7 +51,9 @@ public class MyFileHandle {
          String line = br.readLine();
          while (line != null) { //equivale ao EOF do Scanner
               System.out.println(line);
+              lines.add(line);
               line = br.readLine();
+
          }
          return true;
       } catch(IOException e) {
@@ -65,6 +66,8 @@ public class MyFileHandle {
               e.printStackTrace();
           }   
       }
+      
       return false;       
     }
+
 }

@@ -1,12 +1,14 @@
+import java.util.ArrayList;
+
 public class Jogo {
     private int qtdJogadores;
     private int resultado;
     private Dado dado1 = new Dado();
     private Dado dado2 = new Dado();
-    private Jogador[] jogadores;
-    private Boolean flag = false;
+    private ArrayList<Jogador> jogadores = new ArrayList<Jogador>();
+    private Boolean flage = false;
 
-    public void inserirJogadores(Jogador[] jogadores) {
+    /*public void inserirJogadores(Jogador[] jogadores) {
         this.jogadores = jogadores;
         this.qtdJogadores = jogadores.length;
     }
@@ -15,7 +17,7 @@ public class Jogo {
         for (int i = 0; i < jogadores.length; i++) {
             jogadores[i].setValorAposta(apostas[i]);
         }
-    }
+    }*/
 
     public void jogarDados() {
         dado1.rolar();
@@ -27,15 +29,14 @@ public class Jogo {
         System.out.println("Resultado dos dados: " + resultado);
     }
 
-    public void mostrarVencedor() {
-        for (Jogador jogador : jogadores) {
-            if (jogador.getValorAposta() == resultado) {
-                System.out.println("Vencedor: " + jogador.getNome());
-                flag = true;
-            }
+    public Boolean mostrarVencedor(String nam, int ap, String id, int id2) {
+        if (ap == resultado) {
+            System.out.println("Vencedor: " + nam);
+            flage = true;
         }
-        if(flag == false){
-            System.out.println("Ninguém acertou");
+        if(flage == true && Integer.parseInt(id) == id2){
+            return true;
         }
+        return false;
     }
 }

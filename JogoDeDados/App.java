@@ -3,13 +3,13 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-        Boolean flag = false;
-        String[] line;
-        Boolean vef;
-
-        ArrayList<Jogador> player = new ArrayList();
         Scanner ler = new Scanner(System.in);
-        MyFileHandle.read("JogoDeDados\\utils\\jogadores.csv");
+        ArrayList<Jogador> jogadores = new ArrayList<>();
+        String[] dadosLinha;
+        boolean entradaValida;
+        final String caminhoCSV = "utils\\jogadores.csv";
+
+        MyFileHandle.read(caminhoCSV);
 
         System.out.print("Quantos jogadores vão participar? ");
         int qtd = ler.nextInt();
@@ -20,51 +20,79 @@ public class App {
             return;
         }
 
-        // Coletar nome e aposta de cada jogador
         for (int i = 0; i < qtd; i++) {
-            Jogador play = new Jogador();
+            Jogador jogador = new Jogador();
+
             System.out.print("Nome do jogador " + (i + 1) + ": ");
-            play.setNome(ler.nextLine());
-            do{
-                System.out.println("ID: ");
-                play.setId(ler.nextInt());
-                for (int j = 0; j < MyFileHandle.lines.size(); j++) {
-                    line = MyFileHandle.lines.get(i).split(";");
-                    if(play.getId() == Integer.parseInt(line[0])){
-                        flag = true;
+            jogador.setNome(ler.nextLine());
+
+            do {
+                entradaValida = true;
+                System.out.print("ID: ");
+                int id = ler.nextInt();
+                jogador.setId(id);
+                ler.nextLine(); // limpa buffer
+
+                for (String linha : MyFileHandle.lines) {
+                    if (linha.trim().isEmpty()) continue;
+
+                    dadosLinha = linha.split(";");
+                    if (dadosLinha.length < 2) continue;
+
+                    try {
+                        int idArquivo = Integer.parseInt(dadosLinha[0]);
+                        String nomeArquivo = dadosLinha[1];
+
+                        if (id == idArquivo && !jogador.getNome().equals(nomeArquivo)) {
+                            entradaValida = false;
+                            System.out.println("ID já existe com nome diferente. Tente outro ID.");
+                            break;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Linha inválida no arquivo, ignorando: " + linha);
                     }
                 }
+            } while (!entradaValida);
 
-            }while(flag == true);
-            do{
+            do {
                 System.out.print("Aposta (entre 2 e 12): ");
-                play.setValorAposta(ler.nextInt());
-                ler.nextLine();
-            } while (play.getValorAposta() < 2 || play.getValorAposta() > 12);
+                jogador.setValorAposta(ler.nextInt());
+                ler.nextLine(); // limpa buffer
+            } while (jogador.getValorAposta() < 2 || jogador.getValorAposta() > 12);
 
-            player.add(play);
+            jogadores.add(jogador);
         }
 
-        // Criar e configurar o jogo
+        // Executa o jogo
         Jogo jogo = new Jogo();
-        /*jogo.inserirJogadores(jogadores);
-        jogo.inserirApostas(apostas);*/
-
-        // Jogar os dados
         jogo.jogarDados();
         jogo.mostrarResultado();
-        for(Jogador players : player){
-            for (int i = 0; i < MyFileHandle.lines.size(); i++) {   
-                line = MyFileHandle.lines.get(i).split(";");
-                vef = jogo.mostrarVencedor(players.getNome(), players.getValorAposta(), line[2], players.getId());
-                if(vef == true){
-                    players.setWinner(players.getWinner() + 1);
-                }
+
+        for (Jogador j : jogadores) {
+            jogo.mostrarVencedor(j.getNome(), j.getValorAposta());
+        }
+
+        ArrayList<Jogador> vencedores = new ArrayList<>();
+
+        for (Jogador j : jogadores) {
+            int soma = jogo.jogarDados();
+            if (j.getValorAposta() == soma) {
+                j.setWinner(1);
+                vencedores.add(j);
             }
         }
-        for(Jogador players : player){
-            MyFileHandle.write("JogoDeDados\\utils\\jogadores.csv", players.toString(), true);
+
+        for (Jogador vencedor : vencedores) {
+            MyFileHandle.write(caminhoCSV, vencedor.toString() + "\n", true);
         }
-        
+
+        if (vencedores.isEmpty()) {
+            System.out.println("Nenhum jogador venceu nesta rodada.");
+        } else {
+            System.out.println("Vencedores registrados no arquivo:");
+            for (Jogador vencedor : vencedores) {
+                System.out.println("- " + vencedor.getNome() + " (ID: " + vencedor.getId() + ")");
+            }
+        }
     }
 }

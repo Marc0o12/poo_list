@@ -19,21 +19,24 @@ public class Jogo {
         }
     }*/
 
-    public void jogarDados() {
+    public int jogarDados() {
         dado1.rolar();
         dado2.rolar();
         resultado = dado1.getValorFace() + dado2.getValorFace();
+        return resultado;
     }
 
     public void mostrarResultado() {
         System.out.println("Resultado dos dados: " + resultado);
     }
 
-    public Boolean mostrarVencedor(String nam, int ap, String id, int id2) {
+    public void mostrarVencedor(String nam, int ap) {
         if (ap == resultado) {
             System.out.println("Vencedor: " + nam);
             flage = true;
         }
+    }
+    public Boolean verficaId(String nam, int ap, String id, int id2) {
         if(flage == true && Integer.parseInt(id) == id2){
             return true;
         }

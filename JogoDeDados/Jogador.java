@@ -35,6 +35,6 @@ public class Jogador {
 
     @Override
     public String toString(){
-        return "/n" + this.id + ";" + this.nome + ";" + this.winner + "\n";
+        return "\n" + this.id + ";" + this.nome + ";" + this.winner + "\n";
     }
 }
